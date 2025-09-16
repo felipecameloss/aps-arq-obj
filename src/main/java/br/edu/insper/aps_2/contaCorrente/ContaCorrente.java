@@ -1,0 +1,84 @@
+package br.edu.insper.aps_2.contaCorrente;
+
+import br.edu.insper.aps_2.cartao.Cartao;
+import br.edu.insper.aps_2.cliente.Cliente;
+import br.edu.insper.aps_2.movimentacao.Movimentacao;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+
+public class ContaCorrente {
+
+    private String agencia;
+    private String numero;
+    private double saldo;
+    private double limite;
+    private Cliente cliente;
+
+    private final ArrayList<Movimentacao> movimentacoes = new ArrayList<>();
+    private final ArrayList<Cartao> cartoes = new ArrayList<>();
+
+    // Construtor vazio necessário pro Spring desserializar JSON
+    public ContaCorrente() {}
+
+    // Construtor completo (caso queira instanciar manualmente)
+    public ContaCorrente(String agencia, String numero, double saldo, double limite, Cliente cliente) {
+        this.agencia = agencia;
+        this.numero = numero;
+        this.saldo = saldo;
+        this.limite = limite;
+        this.cliente = cliente;
+    }
+
+    // getters e setters
+    public String getAgencia() { return agencia; }
+    public void setAgencia(String agencia) { this.agencia = agencia; }
+
+    public String getNumero() { return numero; }
+    public void setNumero(String numero) { this.numero = numero; }
+
+    public double getSaldo() { return saldo; }
+    public void setSaldo(double saldo) { this.saldo = saldo; }
+
+    public double getLimite() { return limite; }
+    public void setLimite(double limite) { this.limite = limite; }
+
+    public Cliente getCliente() { return cliente; }
+    public void setCliente(Cliente cliente) { this.cliente = cliente; }
+
+    public void saque(double valor) {
+
+        if (saldo + limite >= valor) {
+            saldo -= valor;
+//           Salvando a movimentação
+            movimentacoes.add(new Movimentacao(valor, "Saque", LocalDate.now()));
+        } else {
+            throw new RuntimeException("Saldo insuficiente para realizar o saque");
+        }
+
+    }
+
+    public void deposito(double valor) {
+
+        if (valor > 0) {
+            saldo += valor;
+//            Salvando a movimentação
+            movimentacoes.add(new Movimentacao(valor, "Depósito", LocalDate.now()));
+        } else {
+            throw new RuntimeException("Valor de depósito inválido");
+        }
+    }
+
+    public void adicionaCartao(Cartao cartao) {
+        cartoes.add(cartao);
+    }
+
+    public ArrayList<Movimentacao> getMovimentacoes() {
+        return movimentacoes;
+    }
+
+    public ArrayList<Cartao> getCartoes() {
+        return cartoes;
+    }
+}
+
