@@ -1,15 +1,23 @@
 package br.edu.insper.aps_2.cartao;
 
 import br.edu.insper.aps_2.contaCorrente.ContaCorrente;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
 
+@Entity
 public class Cartao {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+    @Column(unique = true)
     private String numeroCartao;
     private String tipo;
     private LocalDate validade;
     private String status;
+    @ManyToOne
+    @JoinColumn(name = "id_conta")
     private ContaCorrente contaCorrente;
 
     public Cartao(String numeroCartao, String tipo, LocalDate validade, String status, ContaCorrente contaCorrente) {

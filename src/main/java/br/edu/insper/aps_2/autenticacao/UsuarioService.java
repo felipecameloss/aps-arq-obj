@@ -10,26 +10,25 @@ import java.util.UUID;
 @Service
 public class UsuarioService {
 
-    private final HashMap<String, Usuario> usuarios = new HashMap<>();
+    private UsuarioRepository usuarioRepository;
 
     private final HashMap<String, Usuario> tokens = new HashMap<>();
 
     public Usuario cadastrarUsuario(Usuario usuario) {
 
         String password = usuario.getPassword();
-
         usuario.setPassword(BCrypt.hashpw(password, BCrypt.gensalt()));
-        usuarios.put(usuario.getEmail(), usuario);
-        return usuario;
+
+        return usuarioRepository.save(usuario);
     }
 
     public Collection<Usuario> listarUsuarios() {
-        return usuarios.values();
+        return usuarioRepository.findAll();
     }
 
     public String login(Usuario usuario) {
 
-        Usuario user = usuarios.get(usuario.getEmail());
+        Usuario user = usuarioRepository.findByEmail(usuario.getEmail());
         if (BCrypt.checkpw(usuario.getPassword(), user.getPassword())) {
 
             String token = UUID.randomUUID().toString();

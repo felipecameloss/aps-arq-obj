@@ -15,7 +15,8 @@ public class ContaCorrenteService {
     @Autowired
     ClienteService clienteService;
 
-    private final HashMap<String, ContaCorrente> contas = new HashMap<>();
+    @Autowired
+    ContaCorrenteRepository contaCorrenteRepository;
 
     public ContaCorrente cadastraConta(String cpf, ContaCorrente contaCorrente) {
         Cliente cliente = clienteService.buscaCliente(cpf);
@@ -27,18 +28,16 @@ public class ContaCorrenteService {
         contaCorrente.setCliente(cliente);
         cliente.setContaCorrente(contaCorrente);
 
-        contas.put(contaCorrente.getNumero(), contaCorrente);
-
-        return contaCorrente;
+        return contaCorrenteRepository.save(contaCorrente);
     }
 
 
     public Collection<ContaCorrente> listaContas() {
-        return contas.values();
+        return contaCorrenteRepository.findAll();
     }
 
     public ContaCorrente buscaConta(String numero) {
-        return contas.get(numero);
+        return contaCorrenteRepository.findByNumero(numero);
     }
 
     public void realizarSaque(String cpf, double valor) {
@@ -60,7 +59,7 @@ public class ContaCorrenteService {
     }
 
     public Collection<Movimentacao> listaMovimentacoes(String numero) {
-        ContaCorrente conta = contas.get(numero);
+        ContaCorrente conta = contaCorrenteRepository.findByNumero(numero);
 
         return conta.getMovimentacoes();
     }

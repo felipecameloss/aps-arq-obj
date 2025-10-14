@@ -1,6 +1,7 @@
 package br.edu.insper.aps_2.cartao;
 
 import br.edu.insper.aps_2.contaCorrente.ContaCorrente;
+import br.edu.insper.aps_2.contaCorrente.ContaCorrenteRepository;
 import br.edu.insper.aps_2.contaCorrente.ContaCorrenteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,7 +16,11 @@ public class CartaoService {
     @Autowired
     ContaCorrenteService contaCorrenteService;
 
-    private final HashMap<String, Cartao> cartoes = new HashMap<>();
+    @Autowired
+    private ContaCorrenteRepository  contaCorrenteRepository;
+
+    @Autowired
+    private CartaoRepository  cartaoRepository;
 
     public Cartao emiteCartao(Cartao cartao) {
 
@@ -26,25 +31,29 @@ public class CartaoService {
         }
 
         contaCorrente.adicionaCartao(cartao);
-        cartoes.put(cartao.getNumeroCartao(), cartao);
 
-        return cartao;
+        return cartaoRepository.save(cartao);
 
     }
 
     public Collection<Cartao> listaCartoes() {
-        return cartoes.values();
+        return cartaoRepository.findAll();
     }
 
-    public ArrayList<Cartao> listaCartoesConta(ContaCorrente conta) {
-        return conta.getCartoes();
+    public ArrayList<Cartao> listaCartoesConta(String numero) {
+        ContaCorrente contaCorrente = contaCorrenteRepository.findByNumero(numero);
+        return contaCorrente.getCartoes();
     }
 
-    public void cancelaCartao(Cartao cartao) {
+    public void cancelaCartao(String numeroCartao) {
+        Cartao cartao = cartaoRepository.findByNumeroCartao(numeroCartao);
+        assert cartao != null;
         cartao.cancelaCartao();
     }
 
-    public boolean verificaCartaoAtivo(Cartao cartao) {
+    public boolean verificaCartaoAtivo(String numeroCartao) {
+        Cartao cartao = cartaoRepository.findByNumeroCartao(numeroCartao);
+        assert cartao != null;
         return cartao.getStatus().equals("ATIVO");
     }
 

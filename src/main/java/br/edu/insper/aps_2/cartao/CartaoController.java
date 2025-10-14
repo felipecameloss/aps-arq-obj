@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
+import java.util.stream.Gatherer;
 
 @RestController
 @RequestMapping("/cartoes")
@@ -35,22 +36,22 @@ public class CartaoController {
     }
 
     // Lista cartões de uma conta específica
-    @GetMapping("/conta")
-    public Collection<Cartao> listaCartoesConta(@RequestBody ContaCorrente conta) {
-        return cartaoService.listaCartoesConta(conta);
+    @GetMapping("/conta/{numero}")
+    public Collection<Cartao> listaCartoesConta(@PathVariable String numero) {
+        return cartaoService.listaCartoesConta(numero);
     }
 
     // Cancela um cartão específico
-    @PostMapping("/cancelar")
+    @PostMapping("/cancelar/{numeroCartao}")
     public void cancelaCartao(@RequestHeader(name = "token") String token,
-                              @RequestBody Cartao cartao) {
+                              @PathVariable String numeroCartao) {
         Usuario usuario = usuarioService.validarToken(token);
-        cartaoService.cancelaCartao(cartao);
+        cartaoService.cancelaCartao(numeroCartao);
     }
 
     // Verifica se um cartão está ativo
-    @GetMapping("/ativo")
-    public boolean verificaCartaoAtivo(@RequestBody Cartao cartao) {
-        return cartaoService.verificaCartaoAtivo(cartao);
+    @GetMapping("/ativo/{numeroCartao}")
+    public boolean verificaCartaoAtivo(@PathVariable String numeroCartao) {
+        return cartaoService.verificaCartaoAtivo(numeroCartao);
     }
 }

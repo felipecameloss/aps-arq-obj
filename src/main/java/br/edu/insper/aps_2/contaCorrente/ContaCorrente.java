@@ -3,19 +3,35 @@ package br.edu.insper.aps_2.contaCorrente;
 import br.edu.insper.aps_2.cartao.Cartao;
 import br.edu.insper.aps_2.cliente.Cliente;
 import br.edu.insper.aps_2.movimentacao.Movimentacao;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+@Entity
 public class ContaCorrente {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
     private String agencia;
+    @Column(nullable = false,  unique = true)
     private String numero;
     private double saldo;
     private double limite;
+
+    @JsonIgnore
+    @JoinColumn(name = "id_cliente")
+    @OneToOne
     private Cliente cliente;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "contaCorrente")
     private final ArrayList<Movimentacao> movimentacoes = new ArrayList<>();
+    @JsonIgnore
+    @OneToMany(mappedBy = "contaCorrente")
     private final ArrayList<Cartao> cartoes = new ArrayList<>();
 
     // Construtor vazio necessário pro Spring desserializar JSON

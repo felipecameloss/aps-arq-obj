@@ -1,15 +1,24 @@
 package br.edu.insper.aps_2.cliente;
 
 import br.edu.insper.aps_2.contaCorrente.ContaCorrente;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
 
+@Entity
 public class Cliente {
 
-    private String cpf;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    @Column(nullable = false)
     private String nome;
+    @Column(nullable = false, unique = true)
+    private String cpf;
     private LocalDate dataNascimento;
     private Float salario;
+    @OneToOne(mappedBy = "cliente")
     private ContaCorrente contaCorrente;
 
     public Cliente(String cpf, String nome, LocalDate dataNascimento, Float salario, ContaCorrente contaCorrente) {
