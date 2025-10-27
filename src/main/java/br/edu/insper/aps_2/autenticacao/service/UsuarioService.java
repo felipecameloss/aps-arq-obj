@@ -1,5 +1,7 @@
-package br.edu.insper.aps_2.autenticacao;
+package br.edu.insper.aps_2.autenticacao.service;
 
+import br.edu.insper.aps_2.autenticacao.model.Usuario;
+import br.edu.insper.aps_2.autenticacao.repository.UsuarioRepository;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 

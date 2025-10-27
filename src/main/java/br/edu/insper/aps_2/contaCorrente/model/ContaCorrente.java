@@ -1,7 +1,7 @@
-package br.edu.insper.aps_2.contaCorrente;
+package br.edu.insper.aps_2.contaCorrente.model;
 
-import br.edu.insper.aps_2.cartao.Cartao;
-import br.edu.insper.aps_2.cliente.Cliente;
+import br.edu.insper.aps_2.cartao.model.Cartao;
+import br.edu.insper.aps_2.cliente.model.Cliente;
 import br.edu.insper.aps_2.movimentacao.Movimentacao;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -32,18 +32,31 @@ public class ContaCorrente {
     private final ArrayList<Movimentacao> movimentacoes = new ArrayList<>();
     @JsonIgnore
     @OneToMany(mappedBy = "contaCorrente")
-    private final ArrayList<Cartao> cartoes = new ArrayList<>();
+    private ArrayList<Cartao> cartoes = new ArrayList<>();
 
     // Construtor vazio necessário pro Spring desserializar JSON
     public ContaCorrente() {}
 
     // Construtor completo (caso queira instanciar manualmente)
-    public ContaCorrente(String agencia, String numero, double saldo, double limite, Cliente cliente) {
+    public ContaCorrente(String agencia, String numero, double saldo, double limite, Cliente cliente, ArrayList<Cartao> cartoes) {
         this.agencia = agencia;
         this.numero = numero;
         this.saldo = saldo;
         this.limite = limite;
         this.cliente = cliente;
+        this.cartoes = cartoes;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public void setCartoes(ArrayList<Cartao> cartoes) {
+        this.cartoes = cartoes;
     }
 
     // getters e setters

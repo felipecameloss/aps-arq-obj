@@ -1,6 +1,6 @@
 package br.edu.insper.aps_2.movimentacao;
 
-import br.edu.insper.aps_2.contaCorrente.ContaCorrente;
+import br.edu.insper.aps_2.contaCorrente.model.ContaCorrente;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;

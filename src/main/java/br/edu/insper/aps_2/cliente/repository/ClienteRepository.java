@@ -1,10 +1,8 @@
-package br.edu.insper.aps_2.cliente;
+package br.edu.insper.aps_2.cliente.repository;
 
+import br.edu.insper.aps_2.cliente.model.Cliente;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-
-import java.time.LocalDate;
-import java.util.List;
 
 @Repository
 public interface ClienteRepository extends JpaRepository<Cliente, Integer> {

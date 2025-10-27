@@ -1,4 +1,4 @@
-package br.edu.insper.aps_2.autenticacao;
+package br.edu.insper.aps_2.autenticacao.model;
 
 import jakarta.persistence.*;
 

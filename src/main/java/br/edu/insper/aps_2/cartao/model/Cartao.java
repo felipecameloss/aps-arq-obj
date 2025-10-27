@@ -1,6 +1,6 @@
-package br.edu.insper.aps_2.cartao;
+package br.edu.insper.aps_2.cartao.model;
 
-import br.edu.insper.aps_2.contaCorrente.ContaCorrente;
+import br.edu.insper.aps_2.contaCorrente.model.ContaCorrente;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -26,6 +26,10 @@ public class Cartao {
         this.validade = validade;
         this.status = "ATIVO";
         this.contaCorrente = contaCorrente;
+    }
+
+    public Cartao() {
+
     }
 
     public ContaCorrente getContaCorrente() {
